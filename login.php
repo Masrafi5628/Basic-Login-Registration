@@ -1,5 +1,6 @@
 <?php
 require_once('Classes/Database.php');
+require_once('Classes/Session.php');
 
 if (isset($_POST['login'])) {
     $db = new Database("localhost", "root", "", "webdevlab");
@@ -8,12 +9,14 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT id,password_hash FROM profile WHERE email='$email'";
+    $sql = "SELECT id,name,password_hash FROM profile WHERE email='$email'";
 
     $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
         $hashed_password = $row['password_hash'];
+        Session::init();
+        Session::set('name',$row['name']);
         if (password_verify($password, $hashed_password)) {
             header('location: profile.php');
             exit();
