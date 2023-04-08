@@ -23,7 +23,6 @@ if (isset($_POST['register'])) {
             $insert = true;
         }
     }
-
     $db->closeConnection();
 }
 ?>
